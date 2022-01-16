@@ -124,6 +124,7 @@ const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     margin: 10,
+    marginLeft: 0,
   },
   add: {
     width: 40,

@@ -5,7 +5,7 @@ interface SubmitProps {
   label?: string;
 }
 
-const Submit: FC<SubmitProps> = ({ handleSubmit, label = "Zatwierdź" }) => {
+const Submit: FC<SubmitProps> = ({ handleSubmit, label = "Dodaj" }) => {
   return (
     <Pressable style={style.submit} onPress={handleSubmit}>
       <Text style={style.submitText}>{label}</Text>
@@ -22,6 +22,7 @@ const style = StyleSheet.create({
     borderRadius: 4,
     elevation: 3,
     backgroundColor: "black",
+    marginTop: 20,
   },
   submitText: {
     fontSize: 16,

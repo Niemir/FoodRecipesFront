@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, TextInput, View } from "react-native";
 
 import Ingredients, { Ingredient } from "../components/AddRecipes/Ingredients";
+import Macro, { Macros } from "../components/AddRecipes/Macro";
 import Submit from "../components/Submit";
 import Title from "../components/Title";
 
@@ -31,7 +32,7 @@ const initialRecipe = {
 const AddRecipe = () => {
   const [recipeValues, setRecipesValues] = useState<Recipe>(initialRecipe);
 
-  const handleRecipes = (ingredients: Ingredient[]) => {
+  const handleRecipesIngredients = (ingredients: Ingredient[]) => {
     const ingredientsNames: string[] = [];
     const ingredientsQty: string[] = [];
     const ingredientsUnits: string[] = [];
@@ -51,6 +52,21 @@ const AddRecipe = () => {
     setRecipesValues(recipeWithIngredients);
   };
 
+  const handleRecipesMacros = (macros: Macros) => {
+    const toNumberMacros = Object.entries(macros).map(([key, value]) => ({
+      [key]: Number(value),
+    }));
+    toNumberMacros.forEach((number) => {
+      macros = { ...macros, ...number };
+    });
+
+    setRecipesValues({ ...recipeValues, ...macros });
+  };
+
+  useEffect(() => {
+    console.log(recipeValues);
+  }, [recipeValues]);
+
   const handleSubmit = async () => {
     const res = await fetch("http://192.168.1.135:5000/api", {
       body: JSON.stringify(recipeValues),
@@ -63,7 +79,7 @@ const AddRecipe = () => {
       .then((data) => console.log(data));
   };
   return (
-    <View style={styles.wrapper}>
+    <ScrollView style={styles.wrapper}>
       <Title>Nazwa przepisu</Title>
 
       <TextInput
@@ -76,10 +92,11 @@ const AddRecipe = () => {
         placeholder="Np. Tosty z serem"
       />
 
-      <Ingredients handleRecipeValues={handleRecipes} />
+      <Ingredients handleRecipeValues={handleRecipesIngredients} />
+      <Macro handleRecipesMacros={handleRecipesMacros} />
 
       <Submit handleSubmit={handleSubmit} />
-    </View>
+    </ScrollView>
   );
 };
 
