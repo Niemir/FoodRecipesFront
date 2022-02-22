@@ -8,7 +8,8 @@ import Title from "../components/Title";
 
 import { inputs } from "../styles";
 
-interface Recipe {
+export interface Recipe {
+  entityId?: string;
   title: string;
   ingredientsNames: string[];
   ingredientsQty: string[];
@@ -17,6 +18,7 @@ interface Recipe {
   carbohydrates: number;
   fat: number;
   calories: number;
+  active: boolean;
 }
 
 const initialRecipe = {
@@ -28,6 +30,7 @@ const initialRecipe = {
   carbohydrates: 0,
   fat: 0,
   calories: 0,
+  active: false,
 };
 const AddRecipe = () => {
   const [recipeValues, setRecipesValues] = useState<Recipe>(initialRecipe);

@@ -2,6 +2,7 @@ import { Picker } from "@react-native-picker/picker";
 import { FC, useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { inputs } from "../../styles";
+import AddRoundedButton from "../AddRoundedButton";
 import Title from "../Title";
 
 export interface Ingredient {
@@ -110,9 +111,7 @@ const Ingredients: FC<IngredientsProps> = ({ handleRecipeValues }) => {
           <Picker.Item label="ml" value="ml" />
           <Picker.Item label="szt" value="szt" />
         </Picker>
-        <Pressable style={style.add} onPress={addIngredient}>
-          <Text style={style.addText}>+</Text>
-        </Pressable>
+        <AddRoundedButton handlePress={addIngredient} />
       </View>
     </View>
   );

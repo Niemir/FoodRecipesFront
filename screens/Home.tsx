@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
+import RecipeElement from "../components/RecipeElement";
+import Title from "../components/Title";
 interface Recipe {
   entityId: string;
   ingredientsNames: string[];
@@ -9,46 +11,37 @@ interface Recipe {
 }
 
 const Home = ({ navigation }) => {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  useEffect(() => {}, []);
+  // const [recipes, setRecipes] = useState<Recipe[]>([]);
 
-  const api = () => {
-    console.log("eun");
-    fetch("http://192.168.1.135:5000/getRecipes")
-      .then((response) => response.json())
-      .then((data) => setRecipes(data));
-  };
+  // useEffect(() => {
+  //   if (recipes.length === 0) {
+  //     fetch("http://192.168.1.135:5000/getRecipes")
+  //       .then((response) => response.json())
+  //       .then((data) => setRecipes(data));
+  //   }
+  // }, []);
+
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screedn</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate("Add Recipe")}
-      />
-      <Button title="Fetch" onPress={api} />
-
-      {recipes &&
-        recipes.map(
-          ({
-            entityId,
-            title,
-            ingredientsNames,
-            ingredientsQty,
-            ingredientsUnits,
-          }) => (
-            <View key={entityId} style={{ flexDirection: "row" }}>
-              <Text>{title}</Text>
-              {ingredientsNames.map((ingredient, id) => (
-                <Text>
-                  {ingredientsNames[id]} {ingredientsQty[id]}{" "}
-                  {ingredientsUnits[id]}
-                </Text>
-              ))}
-            </View>
-          )
-        )}
+    <View style={styles.wrapper}>
+      <View>
+        <Title>Przepisy:</Title>
+        {/* <View style={styles.recipesWrapper}>
+          {recipes &&
+            recipes.map((recipe) => (
+              <RecipeElement key={recipe.entityId} recipe={recipe} />
+            ))}
+        </View> */}
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    padding: 20,
+    paddingTop: 0,
+  },
+  recipesWrapper: {},
+});
 
 export default Home;
