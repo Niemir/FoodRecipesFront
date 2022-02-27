@@ -11,9 +11,7 @@ import { inputs } from "../styles";
 export interface Recipe {
   entityId?: string;
   title: string;
-  ingredientsNames: string[];
-  ingredientsQty: string[];
-  ingredientsUnits: string[];
+  ingredients: Ingredient[];
   protein: number;
   carbohydrates: number;
   fat: number;
@@ -23,9 +21,7 @@ export interface Recipe {
 
 const initialRecipe = {
   title: "",
-  ingredientsNames: [],
-  ingredientsQty: [],
-  ingredientsUnits: [],
+  ingredients: [],
   protein: 0,
   carbohydrates: 0,
   fat: 0,
@@ -36,20 +32,9 @@ const AddRecipe = () => {
   const [recipeValues, setRecipesValues] = useState<Recipe>(initialRecipe);
 
   const handleRecipesIngredients = (ingredients: Ingredient[]) => {
-    const ingredientsNames: string[] = [];
-    const ingredientsQty: string[] = [];
-    const ingredientsUnits: string[] = [];
-    ingredients.forEach((ingredient) => {
-      ingredientsNames.push(ingredient.name);
-      ingredientsQty.push(ingredient.qty);
-      ingredientsUnits.push(ingredient.unit);
-    });
-
     const recipeWithIngredients = {
       ...recipeValues,
-      ingredientsNames,
-      ingredientsQty,
-      ingredientsUnits,
+      ingredients,
     };
 
     setRecipesValues(recipeWithIngredients);
@@ -67,11 +52,12 @@ const AddRecipe = () => {
   };
 
   useEffect(() => {
-    console.log(recipeValues);
+    // console.log(recipeValues);
   }, [recipeValues]);
 
   const handleSubmit = async () => {
-    const res = await fetch("http://192.168.1.135:5000/api", {
+    // console.log(recipeValues);
+    const res = await fetch("http://192.168.1.135:5000/recipes/add", {
       body: JSON.stringify(recipeValues),
       headers: {
         "Content-Type": "application/json",
@@ -97,7 +83,6 @@ const AddRecipe = () => {
 
       <Ingredients handleRecipeValues={handleRecipesIngredients} />
       <Macro handleRecipesMacros={handleRecipesMacros} />
-
       <Submit handleSubmit={handleSubmit} />
     </ScrollView>
   );
