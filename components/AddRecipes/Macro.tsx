@@ -11,6 +11,7 @@ export interface Macros {
 }
 interface MacroProps {
   handleRecipesMacros: (macros: Macros) => void;
+  initialValue?: Macros;
 }
 const initialValues: Macros = {
   protein: 0,
@@ -33,9 +34,10 @@ const handleTranslate = (label: string): string => {
   }
 };
 
-const Macro: FC<MacroProps> = ({ handleRecipesMacros }) => {
-  const [macros, setMacros] = useState<Macros>(initialValues);
-
+const Macro: FC<MacroProps> = ({ handleRecipesMacros, initialValue }) => {
+  const [macros, setMacros] = useState<Macros>(
+    initialValue ? initialValue : initialValues
+  );
   const showMacros = Object.entries(macros)
     .sort()
     .map(([key, val]) => (

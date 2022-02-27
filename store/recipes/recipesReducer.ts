@@ -41,7 +41,7 @@ const recipesSlice = createSlice({
       .addCase(fetchRecipes.fulfilled, (state, action) => {
         if (state.loading === "pending") {
           state.loading = "idle";
-          state.entities = action.payload;
+          state.entities = action.payload.recipes;
           // state.currentRequestId = undefined
         }
       })

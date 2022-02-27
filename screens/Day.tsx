@@ -14,7 +14,7 @@ import useUpdateEffect from "../hooks/useUpdateEffect";
 import { useAppDispatch } from "../store";
 import { fetchRecipes } from "../store/recipes/recipesAction";
 import recipesReducer, { addToDay } from "../store/recipes/recipesReducer";
-import { Recipe } from "./AddRecipe";
+import { Recipe } from "./Recipes/AddRecipe";
 
 const Day = ({ route }) => {
   const recipes: Recipe[] = useSelector((state) => state.recipes.entities);
@@ -23,8 +23,7 @@ const Day = ({ route }) => {
   const [isDisabled, setDisabled] = useState<boolean>(true);
   const dayID = route.params.dayID;
   const dispatch = useAppDispatch();
-  // const { entities } = useSelector((state) => state.recipes);
-  // console.log(route);
+
   useEffect(() => {
     const newRecipes = recipes.map((recipe) => {
       return { ...recipe, active: false };
@@ -33,7 +32,6 @@ const Day = ({ route }) => {
   }, [recipes]);
 
   useEffect(() => {
-    // console.log(recipes);
     if (recipes.length === 0) {
       dispatch(fetchRecipes());
     }
@@ -58,7 +56,6 @@ const Day = ({ route }) => {
     const activeRecipes = singleDayRecipes.filter(
       (recipe) => recipe.active === true
     );
-    console.log(activeRecipes);
     if (activeRecipes.length > 0) {
       dispatch(addToDay({ day: dayID, activeRecipes }));
     } else {
@@ -67,7 +64,10 @@ const Day = ({ route }) => {
   return (
     <View>
       <Header recipes={singleDayRecipes} />
-      <ScrollView style={styles.recipesWrapper}>
+      <ScrollView
+        style={styles.recipesWrapper}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
         <Button
           onPress={submitDay}
           title="Zatwierdź dzień"

@@ -12,15 +12,21 @@ export interface Ingredient {
 }
 interface IngredientsProps {
   handleRecipeValues: (ingredients: Ingredient[]) => void;
+  initialValue?: Ingredient[];
 }
 const initialIngredient = {
   name: "",
   qty: "",
   unit: "g",
 };
-const Ingredients: FC<IngredientsProps> = ({ handleRecipeValues }) => {
+const Ingredients: FC<IngredientsProps> = ({
+  handleRecipeValues,
+  initialValue,
+}) => {
   const [unit, setUnit] = useState<"szt" | "g" | "ml">("g");
-  const [ingredients, setIngredients] = useState<Array<Ingredient>>([]);
+  const [ingredients, setIngredients] = useState<Array<Ingredient>>(
+    initialValue ? initialValue : []
+  );
   const [currentIngredient, setCurrentIngredient] =
     useState<Ingredient>(initialIngredient);
 

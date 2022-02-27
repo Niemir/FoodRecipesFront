@@ -7,7 +7,7 @@ import {
   VictoryPie,
   VictoryTheme,
 } from "victory-native";
-import { Recipe } from "../screens/AddRecipe";
+import { Recipe } from "../screens/Recipes/AddRecipe";
 import AddRoundedButton from "./AddRoundedButton";
 
 interface RecipeElementProps {
@@ -17,10 +17,8 @@ interface RecipeElementProps {
 const RecipeElement: FC<RecipeElementProps> = ({ recipe }) => {
   const {
     entityId,
-    title,
-    ingredientsNames,
-    ingredientsQty,
-    ingredientsUnits,
+    name,
+    ingredients,
     calories,
     fat,
     protein,
@@ -55,7 +53,7 @@ const RecipeElement: FC<RecipeElementProps> = ({ recipe }) => {
       ]}
     >
       <View>
-        <Text style={styles.text}>{title}</Text>
+        <Text style={styles.text}>{name}</Text>
         <Text style={styles.smallText}>{calories} kcal</Text>
         <Text style={styles.smallText}>Białko: {protein} g</Text>
         <Text style={styles.smallText}>Węglodowany: {carbohydrates} g</Text>
@@ -112,11 +110,6 @@ const styles = StyleSheet.create({
   styledButtonText: {
     color: "white",
   },
-  container: {
-    // height: 50,
-    // flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
-  },
+  container: {},
 });
 export default RecipeElement;

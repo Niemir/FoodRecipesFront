@@ -5,7 +5,7 @@ export const fetchRecipes = createAsyncThunk(
   "recipes/update",
   async (userId, thunkAPI) => {
     // console.log(userId, thunkAPI);
-    const response = await fetch("http://192.168.1.135:5000/getRecipes").then(
+    const response = await fetch("http://192.168.1.135:5000/recipes").then(
       (response) => response.json()
     );
 

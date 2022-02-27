@@ -7,7 +7,7 @@ import useUpdateEffect from "../hooks/useUpdateEffect";
 import { useAppDispatch } from "../store";
 import { fetchRecipes } from "../store/recipes/recipesAction";
 import recipesReducer from "../store/recipes/recipesReducer";
-import { Recipe } from "./AddRecipe";
+import { Recipe } from "./Recipes/AddRecipe";
 
 const ShoppingList = () => {
   const days = useSelector((state) => state.recipes.shoppingList);

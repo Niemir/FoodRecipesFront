@@ -1,20 +1,23 @@
 import { Picker } from "@react-native-picker/picker";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { View } from "react-native";
 import { useSelector } from "react-redux";
 import Title from "../Title";
 
 interface AuthorsProps {
   handleRecipeAuthor: (author: string) => void;
+  initialValue?: string;
 }
 export interface User {
   name: "string";
   _id: "string";
 }
 
-const Authors: FC<AuthorsProps> = ({ handleRecipeAuthor }) => {
+const Authors: FC<AuthorsProps> = ({ handleRecipeAuthor, initialValue }) => {
   const users: User[] = useSelector((state) => state.users.users);
-  const [author, setAuthor] = useState<string>();
+  const [author, setAuthor] = useState<string>(
+    initialValue ? initialValue : ""
+  );
 
   return (
     <View>
@@ -27,6 +30,7 @@ const Authors: FC<AuthorsProps> = ({ handleRecipeAuthor }) => {
         }}
         style={{ borderColor: "black" }}
       >
+        <Picker.Item label="Wybierz" value="" />
         {users.map((user) => (
           <Picker.Item key={user._id} label={user.name} value={user._id} />
         ))}

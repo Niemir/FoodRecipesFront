@@ -15,7 +15,6 @@ const Submit: FC<SubmitProps> = ({
   isLoading = false,
   status = "idle",
 }) => {
-  console.log(isLoading);
   return (
     <Pressable style={style.submit} onPress={handleSubmit}>
       {isLoading ? (

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { View, Text } from "react-native";
-import { Recipe } from "../../screens/AddRecipe";
+import { Recipe } from "../../screens/Recipes/AddRecipe";
 interface HeaderProps {
   recipes: Recipe[];
 }
