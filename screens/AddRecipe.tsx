@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, TextInput, View } from "react-native";
+import Authors from "../components/AddRecipes/Authors";
 
 import Ingredients, { Ingredient } from "../components/AddRecipes/Ingredients";
 import Macro, { Macros } from "../components/AddRecipes/Macro";
+import Snackbar from "../components/Modal";
 import Submit from "../components/Submit";
 import Title from "../components/Title";
 
@@ -10,27 +12,31 @@ import { inputs } from "../styles";
 
 export interface Recipe {
   entityId?: string;
-  title: string;
+  name: string;
   ingredients: Ingredient[];
   protein: number;
   carbohydrates: number;
   fat: number;
   calories: number;
   active: boolean;
+  author: string;
 }
 
 const initialRecipe = {
-  title: "",
+  name: "",
   ingredients: [],
   protein: 0,
   carbohydrates: 0,
   fat: 0,
   calories: 0,
   active: false,
+  author: "",
 };
 const AddRecipe = () => {
   const [recipeValues, setRecipesValues] = useState<Recipe>(initialRecipe);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const handleRecipesIngredients = (ingredients: Ingredient[]) => {
     const recipeWithIngredients = {
       ...recipeValues,
@@ -47,16 +53,21 @@ const AddRecipe = () => {
     toNumberMacros.forEach((number) => {
       macros = { ...macros, ...number };
     });
-
     setRecipesValues({ ...recipeValues, ...macros });
   };
 
-  useEffect(() => {
-    // console.log(recipeValues);
-  }, [recipeValues]);
+  const handleRecipeAuthor = (author: string) => {
+    setRecipesValues({ ...recipeValues, author: author });
+  };
 
   const handleSubmit = async () => {
-    // console.log(recipeValues);
+    if (recipeValues.name === "") {
+      // console.log("ch");
+      // setLoading(false);
+      return;
+    }
+    setLoading(true);
+
     const res = await fetch("http://192.168.1.135:5000/recipes/add", {
       body: JSON.stringify(recipeValues),
       headers: {
@@ -65,25 +76,33 @@ const AddRecipe = () => {
       method: "POST",
     })
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => (data.errors ? setStatus("error") : setStatus("success")))
+      .catch(() => setStatus("error"));
+    // .finally(() => setLoading(false));
   };
+
   return (
     <ScrollView style={styles.wrapper}>
       <Title>Nazwa przepisu</Title>
 
       <TextInput
-        onChangeText={(e) => setRecipesValues({ ...recipeValues, title: e })}
+        onChangeText={(e) => setRecipesValues({ ...recipeValues, name: e })}
         onEndEditing={(e) =>
-          setRecipesValues({ ...recipeValues, title: e.nativeEvent.text })
+          setRecipesValues({ ...recipeValues, name: e.nativeEvent.text })
         }
-        value={recipeValues.title}
+        value={recipeValues.name}
         style={inputs.primary}
         placeholder="Np. Tosty z serem"
       />
 
       <Ingredients handleRecipeValues={handleRecipesIngredients} />
       <Macro handleRecipesMacros={handleRecipesMacros} />
-      <Submit handleSubmit={handleSubmit} />
+      <Authors handleRecipeAuthor={handleRecipeAuthor} />
+      <Submit
+        handleSubmit={handleSubmit}
+        isLoading={isLoading}
+        status={status}
+      />
     </ScrollView>
   );
 };

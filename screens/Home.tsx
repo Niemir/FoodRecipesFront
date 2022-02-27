@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
+import { useSelector } from "react-redux";
 import RecipeElement from "../components/RecipeElement";
 import Title from "../components/Title";
+import { useAppDispatch } from "../store";
+import { fetchUsers } from "../store/users/usersAction";
 interface Recipe {
   entityId: string;
   ingredientsNames: string[];
@@ -11,15 +14,13 @@ interface Recipe {
 }
 
 const Home = ({ navigation }) => {
-  // const [recipes, setRecipes] = useState<Recipe[]>([]);
-
-  // useEffect(() => {
-  //   if (recipes.length === 0) {
-  //     fetch("http://192.168.1.135:5000/getRecipes")
-  //       .then((response) => response.json())
-  //       .then((data) => setRecipes(data));
-  //   }
-  // }, []);
+  const dispatch = useAppDispatch();
+  const users = useSelector((state) => state.users.users);
+  useEffect(() => {
+    if (users.length === 0) {
+      dispatch(fetchUsers());
+    }
+  }, []);
 
   return (
     <View style={styles.wrapper}>
