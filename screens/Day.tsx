@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Button } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/Day/Header";
 import RecipeElement from "../components/RecipeElement";
 import useUpdateEffect from "../hooks/useUpdateEffect";
 import { useAppDispatch } from "../store";
 import { fetchRecipes } from "../store/recipes/recipesAction";
-import recipesReducer, { addToDay } from "../store/recipes/recipesReducer";
+import recipesReducer, {
+  addToDay,
+  removeDay,
+} from "../store/recipes/recipesReducer";
 import { Recipe } from "./Recipes/AddRecipe";
 
 const Day = ({ route }) => {
@@ -46,40 +43,50 @@ const Day = ({ route }) => {
   }, [list]);
 
   const handleRecipePress = (id: string) => {
+    console.log(id);
     const newRecipes = singleDayRecipes.map((recipe) =>
-      recipe.entityId === id ? { ...recipe, active: !recipe.active } : recipe
+      recipe._id === id ? { ...recipe, active: !recipe.active } : recipe
     );
     setSingleDayRecipes(newRecipes);
   };
 
-  const submitDay = () => {
-    const activeRecipes = singleDayRecipes.filter(
-      (recipe) => recipe.active === true
-    );
-    if (activeRecipes.length > 0) {
-      dispatch(addToDay({ day: dayID, activeRecipes }));
+  const submitDay = (type: "add" | "remove") => {
+    console.log(type);
+    if (type === "add") {
+      const activeRecipes = singleDayRecipes.filter(
+        (recipe) => recipe.active === true
+      );
+      if (activeRecipes.length > 0) {
+        dispatch(addToDay({ day: dayID, activeRecipes }));
+      }
     } else {
+      const newRecipes = singleDayRecipes.map((recipe) => ({
+        ...recipe,
+        active: false,
+      }));
+      setSingleDayRecipes(newRecipes);
+      dispatch(removeDay({ day: dayID }));
     }
   };
   return (
     <View>
-      <Header recipes={singleDayRecipes} />
+      <Header
+        dayID={dayID}
+        recipes={singleDayRecipes}
+        submitDay={submitDay}
+        addDayDisabled={isDisabled}
+      />
       <ScrollView
         style={styles.recipesWrapper}
         contentContainerStyle={{ paddingBottom: 100 }}
       >
-        <Button
-          onPress={submitDay}
-          title="Zatwierdź dzień"
-          disabled={isDisabled}
-        />
         {singleDayRecipes &&
           singleDayRecipes.map((recipe) => (
             <Pressable
               key={recipe.entityId}
-              onPress={() => handleRecipePress(recipe.entityId)}
+              onPress={() => handleRecipePress(recipe._id)}
             >
-              <RecipeElement recipe={recipe} />
+              <RecipeElement recipe={recipe} checkRecipe={handleRecipePress} />
             </Pressable>
           ))}
       </ScrollView>

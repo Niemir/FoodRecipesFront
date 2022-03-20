@@ -12,9 +12,10 @@ import AddRoundedButton from "./AddRoundedButton";
 
 interface RecipeElementProps {
   recipe: Recipe;
+  checkRecipe: (id: string) => void;
 }
 
-const RecipeElement: FC<RecipeElementProps> = ({ recipe }) => {
+const RecipeElement: FC<RecipeElementProps> = ({ recipe, checkRecipe }) => {
   const {
     entityId,
     name,
@@ -75,7 +76,7 @@ const RecipeElement: FC<RecipeElementProps> = ({ recipe }) => {
           labelRadius={({ innerRadius }) => innerRadius + 18}
         />
         <AddRoundedButton
-          handlePress={() => console.log("test")}
+          handlePress={() => checkRecipe(recipe._id)}
           additionalStyling={{ marginTop: 20 }}
           label={active ? "-" : "+"}
         />

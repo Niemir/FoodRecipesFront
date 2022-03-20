@@ -28,6 +28,9 @@ const recipesSlice = createSlice({
       // console.log(action);
       state.shoppingList[action.payload.day].push(action.payload.activeRecipes);
     },
+    removeDay(state, action: PayloadAction) {
+      state.shoppingList[action.payload.day].length = 0;
+    },
   },
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
@@ -55,5 +58,5 @@ const recipesSlice = createSlice({
   },
 });
 
-export const { addToDay } = recipesSlice.actions;
+export const { addToDay, removeDay } = recipesSlice.actions;
 export default recipesSlice.reducer;

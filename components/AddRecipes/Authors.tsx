@@ -21,7 +21,7 @@ const Authors: FC<AuthorsProps> = ({ handleRecipeAuthor, initialValue }) => {
 
   return (
     <View>
-      <Title>Autor przepisu</Title>
+      <Title>Autor</Title>
       <Picker
         selectedValue={author}
         onValueChange={(itemValue, itemIndex) => {

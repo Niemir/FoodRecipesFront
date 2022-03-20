@@ -1,14 +1,51 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { View, Text } from "react-native";
+import { Button, Dialog, Paragraph, Portal } from "react-native-paper";
+import { useSelector } from "react-redux";
+import api from "../../api/api";
 import { Recipe } from "../../screens/Recipes/AddRecipe";
+import Authors from "../AddRecipes/Authors";
 interface HeaderProps {
   recipes: Recipe[];
+  submitDay: (type: "add" | "remove") => void;
+  dayID: number;
+  addDayDisabled: boolean;
 }
-const Header: FC<HeaderProps> = ({ recipes }) => {
-  //   if(recipes.length)
+const Header: FC<HeaderProps> = ({
+  recipes,
+  submitDay,
+  dayID,
+  addDayDisabled,
+}) => {
+  const [listAuthor, setListAuthor] = useState("");
+  const [visible, setVisible] = useState(false);
+  const showDialog = () => {
+    setVisible(true);
+  };
+  const hideDialog = () => setVisible(false);
+  const days = useSelector((state) => state.recipes.shoppingList);
+
   const activeRecipes = recipes.filter((recipe) => recipe.active);
   const activeRecipesLength = activeRecipes.length;
 
+  const isDaySubmited = days[dayID].length > 0;
+  const submitedDaysCount = Object.values(days).filter(
+    (day) => day.length > 0
+  ).length;
+
+  const getRecipesIDs = () => {
+    const recipesIDs = Object.values(days)
+      .filter((day) => day.length > 0)
+      .map((day) => day[0].map((recipe) => recipe._id))
+      .map((day) => day);
+    const mergedRecipes = [].concat.apply([], recipesIDs);
+
+    return mergedRecipes;
+  };
+
+  const getAuthor = (id: string) => {
+    setListAuthor(id);
+  };
   const caloriesSum =
     activeRecipesLength > 0 &&
     activeRecipes
@@ -18,15 +55,66 @@ const Header: FC<HeaderProps> = ({ recipes }) => {
   return (
     <View
       style={{
-        height: 70,
-        backgroundColor: "#bbb",
-        // alignItems: "center",
+        backgroundColor: "#e0e0e0",
+        alignItems: "center",
         paddingHorizontal: 20,
-        justifyContent: "center",
+        paddingVertical: 5,
+        justifyContent: "space-between",
+        flexDirection: "row",
       }}
     >
-      <Text style={{ color: "black" }}>Posiłki {activeRecipesLength} / 4</Text>
-      <Text>Kalorie: {caloriesSum}</Text>
+      <View>
+        <Text style={{ color: "black" }}>
+          Posiłki {activeRecipesLength} / 4
+        </Text>
+        <Text>Kalorie: {caloriesSum}</Text>
+      </View>
+      <View>
+        <Button
+          style={{ marginBottom: 5 }}
+          mode="outlined"
+          onPress={() => submitDay(isDaySubmited ? "remove" : "add")}
+          disabled={addDayDisabled}
+        >
+          {isDaySubmited ? "Usuń dzień z listy" : "Zatwierdź dzień"}
+        </Button>
+        <Button
+          mode="contained"
+          onPress={showDialog}
+          disabled={submitedDaysCount === 0}
+        >
+          Dodaj listę zakupów
+        </Button>
+      </View>
+
+      <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Title>Dodawanie listy zakupów</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>
+              Jesteś pewny, że chcesz dodać listę zakupów dla{" "}
+              {submitedDaysCount} {submitedDaysCount === 1 ? "dnia" : "dni"}?
+            </Paragraph>
+            <Authors handleRecipeAuthor={getAuthor} />
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hideDialog}>Nie</Button>
+            <Button
+              mode="contained"
+              style={{ marginLeft: 20 }}
+              onPress={() => {
+                api.post("shoppinglist/add", {
+                  author: listAuthor,
+                  recipes: getRecipesIDs(),
+                });
+                hideDialog();
+              }}
+            >
+              Tak
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </View>
   );
 };
