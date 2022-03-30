@@ -1,17 +1,22 @@
-import { useEffect, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { NavigatorScreenParams } from "@react-navigation/native";
+import { FC, useEffect, useState } from "react";
+import {
+  FlatList,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import Header from "../components/Day/Header";
-import RecipeElement from "../components/RecipeElement";
-import useUpdateEffect from "../hooks/useUpdateEffect";
+import api from "../api/api";
+import ListElement from "../components/ShoppingLists/ListElement";
 import { useAppDispatch } from "../store";
-import { fetchRecipes } from "../store/recipes/recipesAction";
-import recipesReducer from "../store/recipes/recipesReducer";
-import { Recipe } from "./Recipes/AddRecipe";
-
-const ShoppingList = () => {
+interface ShoppingListInterface {}
+const ShoppingList: FC = ({ navigation }) => {
   const days = useSelector((state) => state.recipes.shoppingList);
   const dispatch = useAppDispatch();
+  const [shoppingLists, setShoppingLists] = useState([]);
 
   // useEffect(() => {
   //   console.log(recipes);
@@ -21,29 +26,66 @@ const ShoppingList = () => {
   //   setSingleDayRecipes(newRecipes);
   // }, [recipes]);
 
+  // const getLists= shoppingLists.map((list)=><>)
+
+  const rerenderList = () => {
+    api
+      .get("shoppinglist")
+      .then((data) => setShoppingLists(data.data.withAuthors));
+  };
+
+  useEffect(() => {
+    api
+      .get("shoppinglist")
+      .then((data) => setShoppingLists(data.data.withAuthors));
+  }, []);
+
+  useEffect(() => {
+    // console.log(shoppingLists);
+  }, [shoppingLists]);
+
   useEffect(() => {
     if (days) {
-      const allRecipes = [days["1"], days["2"], days["3"], days["4"]];
-      // const allRecipes = days?.map((day) => day[0]);
-      console.log(allRecipes);
+      // const allRecipes = [days["1"], days["2"], days["3"], days["4"]];
+      // // const allRecipes = days?.map((day) => day[0]);
+      // console.log(allRecipes);
     }
   }, [days]);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      // The screen is focused
+      // Call any action
+      rerenderList();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <View>
-      <ScrollView style={styles.recipesWrapper}>
-        <Text>1</Text>
-      </ScrollView>
+      <View style={styles.list}>
+        {shoppingLists.map((list) => (
+          <ListElement
+            key={list.list._id}
+            data={list}
+            rerenderList={rerenderList}
+            navigation={navigation}
+          />
+        ))}
+      </View>
     </View>
   );
 };
+
+export default ShoppingList;
+
 const styles = StyleSheet.create({
-  wrapper: {
-    padding: 20,
-    paddingTop: 0,
+  container: {
+    flex: 1,
   },
-  recipesWrapper: {
-    padding: 20,
+  list: {
+    padding: 5,
   },
 });
-export default ShoppingList;

@@ -32,7 +32,7 @@ let initialRecipe = {
   author: "",
 };
 
-const Edit = ({ route }) => {
+const Edit = ({ route, navigation }) => {
   const [recipeValues, setRecipesValues] = useState<Recipe | null>();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
@@ -52,19 +52,27 @@ const Edit = ({ route }) => {
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => {}, [recipeValues]);
+  const getInitialValues = async () => {
+    console.log("run");
+    console.log(route.params);
+    const data = await fetch(
+      `http://192.168.1.135:5000/recipes/single/${route.params.recipeId}`
+    );
+    const json = await data.json();
+    setRecipesValues({ ...recipeValues, ...json });
+    return json;
+  };
 
   useEffect(() => {
-    const getInitialValues = async () => {
-      const data = await fetch(
-        `http://192.168.1.135:5000/recipes/single/${route.params.recipeId}`
-      );
-      const json = await data.json();
-      setRecipesValues({ ...recipeValues, ...json });
-      return json;
-    };
-    getInitialValues();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", () => {
+      // The screen is focused
+      // Call any action
+      getInitialValues();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
 
   if (!recipeValues) {
     return (

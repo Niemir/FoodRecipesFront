@@ -40,6 +40,7 @@ const Header: FC<HeaderProps> = ({
       .map((day) => day);
     const mergedRecipes = [].concat.apply([], recipesIDs);
 
+    console.log(mergedRecipes);
     return mergedRecipes;
   };
 
@@ -103,6 +104,7 @@ const Header: FC<HeaderProps> = ({
               mode="contained"
               style={{ marginLeft: 20 }}
               onPress={() => {
+                // getRecipesIDs();
                 api.post("shoppinglist/add", {
                   author: listAuthor,
                   recipes: getRecipesIDs(),

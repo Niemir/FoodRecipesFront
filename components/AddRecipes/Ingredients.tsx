@@ -7,7 +7,7 @@ import Title from "../Title";
 
 export interface Ingredient {
   name: string;
-  qty: string;
+  qty: number;
   unit: "szt" | "g" | "ml";
 }
 interface IngredientsProps {
@@ -16,7 +16,7 @@ interface IngredientsProps {
 }
 const initialIngredient = {
   name: "",
-  qty: "",
+  qty: 0,
   unit: "g",
 };
 const Ingredients: FC<IngredientsProps> = ({
@@ -92,12 +92,12 @@ const Ingredients: FC<IngredientsProps> = ({
         <Text style={{ margin: 5 }}>Ilość:</Text>
         <TextInput
           onChangeText={(e) =>
-            setCurrentIngredient({ ...currentIngredient, qty: e })
+            setCurrentIngredient({ ...currentIngredient, qty: parseInt(e) })
           }
           onEndEditing={(e) =>
             setCurrentIngredient({
               ...currentIngredient,
-              qty: e.nativeEvent.text,
+              qty: parseInt(e.nativeEvent.text),
             })
           }
           value={currentIngredient.qty}

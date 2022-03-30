@@ -9,14 +9,17 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import Days from "./screens/Days";
+import DaysNavigator from "./screens/DaysNavigator";
 import ShoppingList from "./screens/ShoppingList";
 import Recipes from "./screens/Recipes";
+import SingleList from "./screens/SingleList";
+import ShoppingNavigator from "./screens/ShoppingNavigator";
 
-const RECIPES = "Przepisy";
-const HOME = "Strona główna";
-const DAYS = "Dni";
-const SHOPPING_LIST = "Lista zakupów";
+export const RECIPES = "Przepisy";
+export const HOME = "Strona główna";
+export const DAYS = "Dni";
+export const SHOPPING_LIST = "Listy zakupów";
+export const SINGLE_LIST = "Lista zakupów";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -59,10 +62,14 @@ export default function App() {
             />
             <Tab.Screen
               name={DAYS}
-              component={Days}
+              component={DaysNavigator}
               options={{ headerShown: false }}
             />
-            <Tab.Screen name={SHOPPING_LIST} component={ShoppingList} />
+            <Tab.Screen
+              name={SHOPPING_LIST}
+              component={ShoppingNavigator}
+              options={{ headerShown: false }}
+            />
           </Tab.Navigator>
         </NavigationContainer>
       </PaperProvider>

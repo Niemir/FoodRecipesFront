@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { FC, useEffect, useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import RecipeElement from "../components/RecipeElement";
@@ -12,8 +13,10 @@ interface Recipe {
   ingredientsUnits: string[];
   title: string;
 }
-
-const Home = ({ navigation }) => {
+interface HomeProps {
+  navigation: NavigationProp<ParamListBase>;
+}
+const Home: FC<HomeProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
   const users = useSelector((state) => state.users.users);
   useEffect(() => {

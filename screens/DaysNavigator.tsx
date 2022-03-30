@@ -6,7 +6,7 @@ import Day from "./Day";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const Days = () => {
+const DaysNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -26,4 +26,4 @@ const Days = () => {
   );
 };
 
-export default Days;
+export default DaysNavigator;
