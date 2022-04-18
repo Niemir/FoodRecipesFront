@@ -62,6 +62,7 @@ const AddRecipe = () => {
 
   return (
     <ScrollView
+      nestedScrollEnabled={true}
       style={styles.wrapper}
       contentContainerStyle={{ paddingBottom: 50 }}
     >

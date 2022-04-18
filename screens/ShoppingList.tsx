@@ -65,7 +65,7 @@ const ShoppingList: FC = ({ navigation }) => {
 
   return (
     <View>
-      <View style={styles.list}>
+      <ScrollView contentContainerStyle={styles.list}>
         {shoppingLists.map((list) => (
           <ListElement
             key={list.list._id}
@@ -74,7 +74,7 @@ const ShoppingList: FC = ({ navigation }) => {
             navigation={navigation}
           />
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 };

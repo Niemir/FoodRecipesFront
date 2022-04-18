@@ -1,6 +1,16 @@
 import { Picker } from "@react-native-picker/picker";
 import { FC, useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  FlatList,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Card } from "react-native-paper";
 import { inputs } from "../../styles";
 import AddRoundedButton from "../AddRoundedButton";
 import Title from "../Title";
@@ -29,7 +39,7 @@ const Ingredients: FC<IngredientsProps> = ({
   );
   const [currentIngredient, setCurrentIngredient] =
     useState<Ingredient>(initialIngredient);
-
+  const [isPickerVisible, setPickerVisibility] = useState(false);
   const removeIngredient = (name: string) => {
     const newIngredients = ingredients.filter(
       (ingredient) => ingredient.name !== name
@@ -76,20 +86,57 @@ const Ingredients: FC<IngredientsProps> = ({
 
       <View style={style.inputRow}>
         <TextInput
+          onFocus={() => setPickerVisibility(true)}
           onChangeText={(e) =>
             setCurrentIngredient({ ...currentIngredient, name: e })
           }
-          onEndEditing={(e) =>
+          onEndEditing={(e) => {
             setCurrentIngredient({
               ...currentIngredient,
               name: e.nativeEvent.text,
-            })
-          }
+            });
+          }}
           value={currentIngredient.name}
           style={inputs.primary}
           placeholder="Nazwa składnika"
         />
-        <Text style={{ margin: 5 }}>Ilość:</Text>
+        <Text>
+          Zastanowic sie tutaj co zrobic ze skladnikiami, czy dac jako objectid
+          do przepisow czy jako hardocded text
+        </Text>
+        {isPickerVisible && (
+          <FlatList
+            data={[
+              { name: "bulka", type: "pieczywo" },
+              { name: "kajzerka", type: "pieczywo" },
+              { name: "mleko", type: "nabial" },
+              { name: "twarog", type: "nabial" },
+              { name: "twarogf", type: "nabial" },
+              { name: "twarogff", type: "nabial" },
+              { name: "twarogfff", type: "nabial" },
+              { name: "twarogffff", type: "nabial" },
+            ]}
+            renderItem={({ item, index }) => {
+              return (
+                <TouchableOpacity
+                  style={style.resultItem}
+                  onPress={() => {
+                    setCurrentIngredient({
+                      ...currentIngredient,
+                      name: item.name,
+                    });
+                    setPickerVisibility(false);
+                  }}
+                >
+                  <Text>{item.name}</Text>
+                </TouchableOpacity>
+              );
+            }}
+            nestedScrollEnabled={true}
+            keyExtractor={(item) => item.name}
+            style={style.searchResultsContainer}
+          />
+        )}
         <TextInput
           onChangeText={(e) =>
             setCurrentIngredient({ ...currentIngredient, qty: parseInt(e) })
@@ -101,8 +148,8 @@ const Ingredients: FC<IngredientsProps> = ({
             })
           }
           value={currentIngredient.qty}
-          style={{ ...inputs.primary, ...inputs.rounded }}
-          placeholder="0"
+          style={{ ...inputs.primary, ...inputs.rounded, marginHorizontal: 3 }}
+          placeholder="100"
           keyboardType="number-pad"
         />
         <Picker
@@ -117,6 +164,7 @@ const Ingredients: FC<IngredientsProps> = ({
           <Picker.Item label="ml" value="ml" />
           <Picker.Item label="szt" value="szt" />
         </Picker>
+
         <AddRoundedButton handlePress={addIngredient} />
       </View>
     </View>
@@ -145,6 +193,32 @@ const style = StyleSheet.create({
     fontSize: 26,
     textAlignVertical: "center",
     color: "black",
+  },
+  searchResultsContainer: {
+    width: 340,
+    maxHeight: 230,
+    backgroundColor: "#fff",
+    position: "absolute",
+    top: 50,
+    left: 5,
+    zIndex: 1,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.36,
+    shadowRadius: 6.68,
+    elevation: 3,
+  },
+  resultItem: {
+    width: "100%",
+    justifyContent: "center",
+    height: 40,
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 1,
+    paddingLeft: 15,
   },
 });
 export default Ingredients;
