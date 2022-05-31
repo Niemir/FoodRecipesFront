@@ -11,10 +11,11 @@ import {
   View,
 } from "react-native";
 import { Card } from "react-native-paper";
+import { getIngredients } from "../../api/api";
+import useDebounce from "../../hooks/useDebounce";
 import { inputs } from "../../styles";
 import AddRoundedButton from "../AddRoundedButton";
 import Title from "../Title";
-
 export interface Ingredient {
   name: string;
   qty: number;
@@ -40,6 +41,11 @@ const Ingredients: FC<IngredientsProps> = ({
   const [currentIngredient, setCurrentIngredient] =
     useState<Ingredient>(initialIngredient);
   const [isPickerVisible, setPickerVisibility] = useState(false);
+  const debouncedValue = useDebounce<Ingredient>(currentIngredient, 500);
+  const [preparedIngredients, setPreparedIngredients] = useState<Ingredient[]>(
+    []
+  );
+
   const removeIngredient = (name: string) => {
     const newIngredients = ingredients.filter(
       (ingredient) => ingredient.name !== name
@@ -57,6 +63,18 @@ const Ingredients: FC<IngredientsProps> = ({
       setIngredients([...ingredients, currentIngredient]);
     }
   };
+
+  useEffect(() => {
+    const getPreparedIngredients = async () => {
+      try {
+        const result = await getIngredients(debouncedValue.name);
+        setPreparedIngredients(result.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getPreparedIngredients();
+  }, [debouncedValue]);
 
   useEffect(() => {
     if (ingredients) {
@@ -100,22 +118,9 @@ const Ingredients: FC<IngredientsProps> = ({
           style={inputs.primary}
           placeholder="Nazwa składnika"
         />
-        <Text>
-          Zastanowic sie tutaj co zrobic ze skladnikiami, czy dac jako objectid
-          do przepisow czy jako hardocded text
-        </Text>
         {isPickerVisible && (
           <FlatList
-            data={[
-              { name: "bulka", type: "pieczywo" },
-              { name: "kajzerka", type: "pieczywo" },
-              { name: "mleko", type: "nabial" },
-              { name: "twarog", type: "nabial" },
-              { name: "twarogf", type: "nabial" },
-              { name: "twarogff", type: "nabial" },
-              { name: "twarogfff", type: "nabial" },
-              { name: "twarogffff", type: "nabial" },
-            ]}
+            data={preparedIngredients}
             renderItem={({ item, index }) => {
               return (
                 <TouchableOpacity

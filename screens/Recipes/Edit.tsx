@@ -1,3 +1,4 @@
+import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -7,6 +8,8 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { useSelector } from "react-redux";
+import { editSingleRecipe, getSingleRecipe } from "../../api/api";
 import Authors from "../../components/AddRecipes/Authors";
 import Form from "../../components/AddRecipes/Form";
 
@@ -36,16 +39,11 @@ const Edit = ({ route, navigation }) => {
   const [recipeValues, setRecipesValues] = useState<Recipe | null>();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const { token } = useSelector((state) => state.auth.user);
 
   const handleSubmit = async () => {
     setLoading(true);
-    const res = await fetch("http://192.168.1.135:5000/recipes/edit", {
-      body: JSON.stringify(recipeValues),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-    })
+    const res = await editSingleRecipe(recipeValues, token)
       .then((response) => response.json())
       .then((data) => (data.errors ? setStatus("error") : setStatus("success")))
       .catch(() => setStatus("error"))
@@ -53,14 +51,10 @@ const Edit = ({ route, navigation }) => {
   };
 
   const getInitialValues = async () => {
-    console.log("run");
-    console.log(route.params);
-    const data = await fetch(
-      `http://192.168.1.135:5000/recipes/single/${route.params.recipeId}`
-    );
-    const json = await data.json();
-    setRecipesValues({ ...recipeValues, ...json });
-    return json;
+    const data = await getSingleRecipe(route.params.recipeId, token);
+
+    setRecipesValues({ ...recipeValues, ...data });
+    return data;
   };
 
   useEffect(() => {
