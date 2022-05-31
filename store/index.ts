@@ -3,11 +3,14 @@ import { useDispatch } from "react-redux";
 
 import recipesSlice from "./recipes/recipesReducer";
 import usersSlice from "./users/usersReducer";
-
+import messageSlice from "./messages/messagesReducer";
+import authSlice from "./auth/authReducer";
 export const store = configureStore({
   reducer: {
     recipes: recipesSlice,
     users: usersSlice,
+    messages: messageSlice,
+    auth: authSlice,
   },
 });
 

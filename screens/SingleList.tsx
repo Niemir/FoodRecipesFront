@@ -2,22 +2,25 @@ import { View, Text } from "react-native";
 import React, { FC, useEffect, useState } from "react";
 import { ActivityIndicator, Card, List, Paragraph } from "react-native-paper";
 import { getShoppingList, updateIngredientValue } from "../api/api";
-import { EDIT } from "./Recipes";
-import { DAYS, RECIPES } from "../App";
+
 import {
   CommonActions,
   NavigationProp,
   ParamListBase,
   RouteProp,
 } from "@react-navigation/native";
+import { EDIT, RECIPES } from "../helpers/screens";
+import { useSelector } from "react-redux";
 interface SingleListProps {
   navigation: NavigationProp<ParamListBase>;
   route: RouteProp<any>;
 }
 const SingleList: FC<SingleListProps> = ({ route, navigation }) => {
+  const { token } = useSelector((state) => state.auth.user);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
-  const listId = route.params.listId;
+  const listId = route?.params?.listId;
+
   const getList = () => {
     getShoppingList(listId)
       .then((data) => setData(data.data))
@@ -29,7 +32,6 @@ const SingleList: FC<SingleListProps> = ({ route, navigation }) => {
   }, []);
 
   const openIngredient = (id) => {
-    console.log("tu " + id);
     navigation.navigate(RECIPES, {
       screen: EDIT,
       params: {
