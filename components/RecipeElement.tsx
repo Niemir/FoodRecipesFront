@@ -12,7 +12,7 @@ import AddRoundedButton from "./AddRoundedButton";
 
 interface RecipeElementProps {
   recipe: Recipe;
-  checkRecipe: (id: string) => void;
+  checkRecipe?: (id: string) => void;
 }
 
 const RecipeElement: FC<RecipeElementProps> = ({ recipe, checkRecipe }) => {

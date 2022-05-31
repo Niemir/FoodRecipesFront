@@ -12,15 +12,14 @@ import {
 import { useSelector } from "react-redux";
 import { Background } from "victory-native";
 import RecipeElement from "../../components/RecipeElement";
+import { ADD_NEW, EDIT } from "../../helpers/screens";
 import { useAppDispatch } from "../../store";
 import { fetchRecipes } from "../../store/recipes/recipesAction";
-import { ADD_NEW, EDIT } from "../Recipes";
 import { Recipe } from "./AddRecipe";
 
 const List = ({ route, navigation }) => {
   const recipes: Recipe[] = useSelector((state) => state.recipes.entities);
   const dispatch = useAppDispatch();
-  // console.log(route);
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       // in future add loader for refetching list

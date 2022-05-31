@@ -7,12 +7,9 @@ import AddRecipe from "./Recipes/AddRecipe";
 import List from "./Recipes/List";
 import Edit from "./Recipes/Edit";
 import { NavigationContainer } from "@react-navigation/native";
+import { ADD_NEW, EDIT, LIST } from "../helpers/screens";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-
-export const LIST = "Lista przepisów";
-export const ADD_NEW = "Dodaj przepis";
-export const EDIT = "Edytuj przepis";
 
 const Recipes = () => {
   return (

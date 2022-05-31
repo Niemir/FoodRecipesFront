@@ -28,17 +28,11 @@ import {
   SHOPPING_LIST,
   SIGNIN,
 } from "./helpers/screens";
-import Layout from "./components/Layout";
-
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
 
 const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    // primary: "tomato",
-    // accent: "yellow",
   },
 };
 

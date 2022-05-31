@@ -6,7 +6,7 @@ import {
   NavigationProp,
   NavigatorScreenParams,
 } from "@react-navigation/native";
-import { SINGLE_LIST } from "../../App";
+import { SINGLE_LIST } from "../../helpers/screens";
 interface ListElementProps {
   data: any;
   rerenderList: () => void;
@@ -34,7 +34,7 @@ const ListElement: FC<ListElementProps> = ({
   return (
     <Card style={styles.card}>
       <Card.Content>
-        <Paragraph>Autor: {data.author.name}</Paragraph>
+        <Paragraph>Autor: {data?.author?.name}</Paragraph>
         <Paragraph>{data.list.createdAt}</Paragraph>
         <Card.Actions style={{ padding: 0, justifyContent: "space-between" }}>
           <Button loading={loading} onPress={() => handleDelete()}>

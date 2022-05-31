@@ -43,7 +43,6 @@ const Day = ({ route }) => {
   }, [list]);
 
   const handleRecipePress = (id: string) => {
-    console.log(id);
     const newRecipes = singleDayRecipes.map((recipe) =>
       recipe._id === id ? { ...recipe, active: !recipe.active } : recipe
     );
@@ -51,7 +50,6 @@ const Day = ({ route }) => {
   };
 
   const submitDay = (type: "add" | "remove") => {
-    console.log(type);
     if (type === "add") {
       const activeRecipes = singleDayRecipes.filter(
         (recipe) => recipe.active === true
