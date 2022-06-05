@@ -92,6 +92,12 @@ const authSlice = createSlice({
         }
       }
     },
+    updateUser: (state, action) => {
+      // state.user = action.payload;
+      if (action.payload.connections) {
+        state.user.connections = action.payload.connections;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -115,6 +121,6 @@ const authSlice = createSlice({
       });
   },
 });
-export const { checkUserOnInit } = authSlice.actions;
+export const { checkUserOnInit, updateUser } = authSlice.actions;
 const { reducer } = authSlice;
 export default reducer;

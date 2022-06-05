@@ -21,13 +21,16 @@ import SplashScreen from "./screens/SplashScreen";
 import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import { checkUserOnInit } from "./store/auth/authReducer";
 import {
+  CONNECTIONS,
   DAYS,
   HOME,
   RECIPES,
   REGISTER,
   SHOPPING_LIST,
+  SHOPPING_NAV,
   SIGNIN,
 } from "./helpers/screens";
+import Connections from "./screens/Connections";
 
 const theme = {
   ...DefaultTheme,
@@ -65,9 +68,11 @@ const AppStackScreen = () => {
             return <Ionicons name="home" size={size} color={color} />;
           } else if (route.name === RECIPES) {
             return <Ionicons name="receipt" size={size} color={color} />;
+          } else if (route.name === CONNECTIONS) {
+            return <Ionicons name="person-add" size={size} color={color} />;
           } else if (route.name === DAYS) {
             return <Ionicons name="calendar" size={size} color={color} />;
-          } else if (route.name === SHOPPING_LIST) {
+          } else if (route.name === SHOPPING_NAV) {
             return <Ionicons name="cart" size={size} color={color} />;
           }
         },
@@ -82,12 +87,17 @@ const AppStackScreen = () => {
         options={{ headerShown: false }}
       />
       <AppStack.Screen
+        name={CONNECTIONS}
+        component={Connections}
+        options={{ headerShown: true }}
+      />
+      <AppStack.Screen
         name={DAYS}
         component={DaysNavigator}
         options={{ headerShown: false }}
       />
       <AppStack.Screen
-        name={SHOPPING_LIST}
+        name={SHOPPING_NAV}
         component={ShoppingNavigator}
         options={{ headerShown: false }}
       />
@@ -99,6 +109,7 @@ const AppContent: FC = ({ children }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    // AsyncStorageLib.removeItem("@user");
     const getUser = async () => {
       const user = await AsyncStorageLib.getItem("@user");
       dispatch(checkUserOnInit(user ? JSON.parse(user) : null));

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, TextInput, View } from "react-native";
+import { useSelector } from "react-redux";
+import { Text } from "victory-native";
 import Authors from "../../components/AddRecipes/Authors";
 import Form from "../../components/AddRecipes/Form";
 
@@ -23,7 +25,6 @@ export interface Recipe {
   fat: number;
   calories: number;
   active: boolean;
-  author: string;
 }
 
 const initialRecipe = {
@@ -34,12 +35,12 @@ const initialRecipe = {
   fat: 0,
   calories: 0,
   active: false,
-  author: "",
 };
 const AddRecipe = () => {
   const [recipeValues, setRecipesValues] = useState<Recipe>(initialRecipe);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const { token } = useSelector((state) => state.auth.user);
 
   const handleSubmit = async () => {
     if (recipeValues.name === "") {
@@ -48,7 +49,7 @@ const AddRecipe = () => {
     setLoading(true);
 
     const res = await fetch("http://192.168.1.135:5000/recipes/add", {
-      body: JSON.stringify(recipeValues),
+      body: JSON.stringify({ ...recipeValues, token }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -66,12 +67,23 @@ const AddRecipe = () => {
       style={styles.wrapper}
       contentContainerStyle={{ paddingBottom: 50 }}
     >
-      <Form recipeValues={recipeValues} setRecipesValues={setRecipesValues} />
-      <Submit
-        handleSubmit={handleSubmit}
-        isLoading={isLoading}
-        status={status}
-      />
+      {status === "success" ? (
+        <View>
+          <Text>Przepis dodany</Text>
+        </View>
+      ) : (
+        <>
+          <Form
+            recipeValues={recipeValues}
+            setRecipesValues={setRecipesValues}
+          />
+          <Submit
+            handleSubmit={handleSubmit}
+            isLoading={isLoading}
+            status={status}
+          />
+        </>
+      )}
     </ScrollView>
   );
 };

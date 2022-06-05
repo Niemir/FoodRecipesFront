@@ -36,12 +36,6 @@ const Form: FC<FormProps> = ({ recipeValues, setRecipesValues }) => {
     }
   };
 
-  const handleRecipeAuthor = (author: string) => {
-    if (recipeValues) {
-      setRecipesValues({ ...recipeValues, author: author });
-    }
-  };
-
   return (
     <>
       <Title>Nazwa przepisu</Title>
@@ -70,10 +64,6 @@ const Form: FC<FormProps> = ({ recipeValues, setRecipesValues }) => {
           fat: recipeValues.fat,
           calories: recipeValues.calories,
         }}
-      />
-      <Authors
-        handleRecipeAuthor={handleRecipeAuthor}
-        initialValue={recipeValues.author}
       />
     </>
   );

@@ -84,7 +84,6 @@ const Ingredients: FC<IngredientsProps> = ({
   return (
     <View>
       <Title>Składniki</Title>
-
       {ingredients.map((ingredient, id) => (
         <View
           key={ingredient.name + id}
@@ -101,7 +100,8 @@ const Ingredients: FC<IngredientsProps> = ({
           </Pressable>
         </View>
       ))}
-
+      {/* przebudować składniki, tak, żeby wybierać z list składnik, dodawać go jako
+      object, wyciagać id i tak wrzucać do przepisu */}
       <View style={style.inputRow}>
         <TextInput
           onFocus={() => setPickerVisibility(true)}

@@ -11,16 +11,8 @@ const Tab = createBottomTabNavigator();
 const ShoppingNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name={SHOPPING_LIST}
-        component={ShoppingList}
-        initialParams={{ dayID: 1 }}
-      />
-      <Stack.Screen
-        name={SINGLE_LIST}
-        component={SingleList}
-        initialParams={{ dayID: 2 }}
-      />
+      <Stack.Screen name={SHOPPING_LIST} component={ShoppingList} />
+      <Stack.Screen name={SINGLE_LIST} component={SingleList} />
     </Stack.Navigator>
   );
 };

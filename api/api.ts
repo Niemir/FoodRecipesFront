@@ -20,6 +20,10 @@ export const getShoppingList = (id: string) => {
   return api.get(`shoppingList/single/?id=${id}`);
 };
 
+export const getShoppingLists = async (token: string) => {
+  return api.get(`shoppingList/?token=${token}`);
+};
+
 export const getSingleRecipe = async (id: string, token: string) => {
   if (!token) {
     throw new Error("No token provided");
@@ -94,5 +98,21 @@ export const signUp = (name: string, email: string, password: string) => {
     name,
     email,
     password,
+  });
+};
+
+export const addConnection = async (friendID: string, token: string) => {
+  return api.post("connections", {
+    friendID: friendID,
+    token: token,
+  });
+};
+
+export const removeConnection = async (friendID: string, token: string) => {
+  return api.delete("connections", {
+    data: {
+      friendID,
+      token,
+    },
   });
 };

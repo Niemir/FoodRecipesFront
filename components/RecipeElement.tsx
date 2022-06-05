@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Button, Pressable, StyleSheet, Text, View } from "react-native";
+import { Card, Paragraph, Title } from "react-native-paper";
 import {
   VictoryBar,
   VictoryChart,
@@ -45,54 +46,36 @@ const RecipeElement: FC<RecipeElementProps> = ({ recipe, checkRecipe }) => {
     },
   ];
   return (
-    <View
+    <Card
       key={entityId}
       style={[
         active
-          ? { ...styles.wrapper, backgroundColor: "#555" }
+          ? { ...styles.wrapper, backgroundColor: "#dfdfdf" }
           : styles.wrapper,
       ]}
     >
-      <View>
-        <Text style={styles.text}>{name}</Text>
-        <Text style={styles.smallText}>{calories} kcal</Text>
-        <Text style={styles.smallText}>Białko: {protein} g</Text>
-        <Text style={styles.smallText}>Węglodowany: {carbohydrates} g</Text>
-        <Text style={styles.smallText}>Tłuszcze: {fat} g</Text>
-      </View>
+      <Card.Content>
+        <View>
+          <Title>{name}</Title>
+          <Paragraph>{calories} kcal</Paragraph>
+          <Paragraph>Białko: {protein} g</Paragraph>
+          <Paragraph>Węglodowany: {carbohydrates} g</Paragraph>
+          <Paragraph>Tłuszcze: {fat} g</Paragraph>
+        </View>
 
-      <View style={styles.container}>
-        <VictoryPie
-          width={70}
-          height={70}
-          theme={VictoryTheme.material}
-          data={data}
-          x="x"
-          y="value"
-          labelComponent={
-            <VictoryLabel style={{ fill: "black", fontSize: 10 }} />
-          }
-          padding={2}
-          labelRadius={({ innerRadius }) => innerRadius + 18}
-        />
         <AddRoundedButton
           handlePress={() => checkRecipe(recipe._id)}
-          additionalStyling={{ marginTop: 20 }}
+          additionalStyling={{ position: "absolute", right: 20, bottom: 20 }}
           label={active ? "-" : "+"}
         />
-      </View>
-    </View>
+      </Card.Content>
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: "black",
-    padding: 15,
-    borderRadius: 10,
-    marginVertical: 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    marginBottom: 5,
   },
   text: {
     color: "white",

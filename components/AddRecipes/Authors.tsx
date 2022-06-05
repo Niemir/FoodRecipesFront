@@ -9,8 +9,10 @@ interface AuthorsProps {
   initialValue?: string;
 }
 export interface User {
-  name: "string";
-  _id: "string";
+  name: string;
+  _id: string;
+  email: string;
+  connections: string[];
 }
 
 const Authors: FC<AuthorsProps> = ({ handleRecipeAuthor, initialValue }) => {

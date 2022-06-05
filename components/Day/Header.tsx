@@ -17,14 +17,13 @@ const Header: FC<HeaderProps> = ({
   dayID,
   addDayDisabled,
 }) => {
-  const [listAuthor, setListAuthor] = useState("");
   const [visible, setVisible] = useState(false);
   const showDialog = () => {
     setVisible(true);
   };
   const hideDialog = () => setVisible(false);
   const days = useSelector((state) => state.recipes.shoppingList);
-
+  const { token } = useSelector((state) => state.auth.user);
   const activeRecipes = recipes.filter((recipe) => recipe.active);
   const activeRecipesLength = activeRecipes.length;
 
@@ -44,9 +43,6 @@ const Header: FC<HeaderProps> = ({
     return mergedRecipes;
   };
 
-  const getAuthor = (id: string) => {
-    setListAuthor(id);
-  };
   const caloriesSum =
     activeRecipesLength > 0 &&
     activeRecipes
@@ -96,7 +92,6 @@ const Header: FC<HeaderProps> = ({
               Jesteś pewny, że chcesz dodać listę zakupów dla{" "}
               {submitedDaysCount} {submitedDaysCount === 1 ? "dnia" : "dni"}?
             </Paragraph>
-            <Authors handleRecipeAuthor={getAuthor} />
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Nie</Button>
@@ -104,10 +99,9 @@ const Header: FC<HeaderProps> = ({
               mode="contained"
               style={{ marginLeft: 20 }}
               onPress={() => {
-                // getRecipesIDs();
                 api.post("shoppinglist/add", {
-                  author: listAuthor,
                   recipes: getRecipesIDs(),
+                  token,
                 });
                 hideDialog();
               }}

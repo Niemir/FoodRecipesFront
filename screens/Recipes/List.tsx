@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   FlatList,
   ScrollView,
@@ -17,7 +17,7 @@ import { useAppDispatch } from "../../store";
 import { fetchRecipes } from "../../store/recipes/recipesAction";
 import { Recipe } from "./AddRecipe";
 
-const List = ({ route, navigation }) => {
+const List: FC = ({ route, navigation }) => {
   const recipes: Recipe[] = useSelector((state) => state.recipes.entities);
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -33,8 +33,10 @@ const List = ({ route, navigation }) => {
       <FlatList
         contentContainerStyle={{ padding: 20 }}
         data={recipes}
+        keyExtractor={(item) => item?._id as string}
         renderItem={({ item, index }) => (
           <Pressable
+            // key={item._id}
             // onPress={() => handleRecipePress(recipe.entityId)}
             onPress={() =>
               navigation.navigate(EDIT, {
@@ -42,7 +44,7 @@ const List = ({ route, navigation }) => {
               })
             }
           >
-            <RecipeElement key={item._id} recipe={item} />
+            <RecipeElement recipe={item} />
           </Pressable>
         )}
       />

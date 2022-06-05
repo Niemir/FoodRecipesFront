@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import api from "../api/api";
+import api, { getShoppingLists } from "../api/api";
 import ListElement from "../components/ShoppingLists/ListElement";
 import { useAppDispatch } from "../store";
 interface ShoppingListInterface {}
@@ -17,40 +17,24 @@ const ShoppingList: FC = ({ navigation }) => {
   const days = useSelector((state) => state.recipes.shoppingList);
   const dispatch = useAppDispatch();
   const [shoppingLists, setShoppingLists] = useState([]);
+  const { token } = useSelector((state) => state.auth.user);
 
-  // useEffect(() => {
-  //   console.log(recipes);
-  //   const newRecipes = recipes.map((recipe) => {
-  //     return { ...recipe, active: false };
-  //   });
-  //   setSingleDayRecipes(newRecipes);
-  // }, [recipes]);
-
-  // const getLists= shoppingLists.map((list)=><>)
-
-  const rerenderList = () => {
-    api
-      .get("shoppinglist")
-      .then((data) => setShoppingLists(data.data.withAuthors));
+  const rerenderList = async () => {
+    await getShoppingLists(token).then((data) =>
+      setShoppingLists(data.data.withAuthors)
+    );
   };
 
   useEffect(() => {
-    api
-      .get("shoppinglist")
-      .then((data) => setShoppingLists(data.data.withAuthors));
-  }, []);
-
-  useEffect(() => {
-    // console.log(shoppingLists);
-  }, [shoppingLists]);
-
-  useEffect(() => {
-    if (days) {
-      // const allRecipes = [days["1"], days["2"], days["3"], days["4"]];
-      // // const allRecipes = days?.map((day) => day[0]);
-      // console.log(allRecipes);
+    if (token) {
+      const setLists = async () => {
+        await getShoppingLists(token).then((data) =>
+          setShoppingLists(data.data.withAuthors)
+        );
+      };
+      setLists();
     }
-  }, [days]);
+  }, [token]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
