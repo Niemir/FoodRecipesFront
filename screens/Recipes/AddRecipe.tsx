@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Text } from "victory-native";
 import Authors from "../../components/AddRecipes/Authors";
 import Form from "../../components/AddRecipes/Form";
+import { API_URL } from "@env";
 
 import Ingredients, {
   Ingredient,
@@ -47,8 +48,9 @@ const AddRecipe = () => {
     if (recipeValues.name === "") {
       return;
     }
+    console.log(`${API_URL}/recipes/add`);
     // setLoading(true);
-    const res = await fetch("http://192.168.1.135:5000/recipes/add", {
+    const res = await fetch(`${API_URL}recipes/add`, {
       body: JSON.stringify({ ...recipeValues, token }),
       headers: {
         "Content-Type": "application/json",

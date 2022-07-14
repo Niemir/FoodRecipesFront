@@ -1,13 +1,14 @@
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
-import { FC, useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-paper";
-import { useSelector } from "react-redux";
-import RecipeElement from "../components/RecipeElement";
-import Title from "../components/Title";
-import { useAppDispatch } from "../store";
-import { logout } from "../store/auth/authReducer";
-import { fetchUsers } from "../store/users/usersAction";
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { FC, useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button } from 'react-native-paper';
+import { useSelector } from 'react-redux';
+import RecipeElement from '../components/RecipeElement';
+import Title from '../components/Title';
+import { useAppDispatch } from '../store';
+import { logout } from '../store/auth/authReducer';
+import { fetchUsers } from '../store/users/usersAction';
+
 interface Recipe {
   entityId: string;
   ingredientsNames: string[];
@@ -31,6 +32,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   return (
     <View style={styles.wrapper}>
       <View>
+        {console.log(process.env.API_URL)}
         <Title>Przepisy:</Title>
         <Button onPress={async () => dispatch(logout())}>Wyloguj</Button>
 

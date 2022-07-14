@@ -9,6 +9,7 @@ import { login } from "../store/auth/authReducer";
 import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import { useSelector } from "react-redux";
 import { HOME, REGISTER } from "../helpers/screens";
+import axios from "axios";
 
 interface SignInProps {
   navigation: NavigationProp<ParamListBase>;
@@ -39,8 +40,7 @@ const SignIn: FC<SignInProps> = ({ navigation }) => {
                 console.log(err);
               });
           }}
-          validationSchema={validationSchema}
-        >
+          validationSchema={validationSchema}>
           {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
             <Card style={styles.box}>
               <Card.Title title="FoodRecipes" subtitle="Welcome!" style={{}} />
@@ -77,16 +77,14 @@ const SignIn: FC<SignInProps> = ({ navigation }) => {
                 <Button
                   mode="contained"
                   style={styles.submit}
-                  onPress={handleSubmit}
-                >
+                  onPress={handleSubmit}>
                   Log in
                 </Button>
                 <Button
                   style={styles.register}
                   onPress={() => {
                     navigation.navigate(REGISTER);
-                  }}
-                >
+                  }}>
                   Register
                 </Button>
               </Card.Actions>

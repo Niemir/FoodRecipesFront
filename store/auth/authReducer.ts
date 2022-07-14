@@ -63,7 +63,7 @@ export const login = createAsyncThunk(
         error.message ||
         error.toString();
       thunkAPI.dispatch(setMessage("bład przy logowaniu"));
-      return thunkAPI.rejectWithValue("error");
+      return thunkAPI.rejectWithValue("error login");
     }
   }
 );

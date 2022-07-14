@@ -52,8 +52,7 @@ const RecipeElement: FC<RecipeElementProps> = ({ recipe, checkRecipe }) => {
         active
           ? { ...styles.wrapper, backgroundColor: "#dfdfdf" }
           : styles.wrapper,
-      ]}
-    >
+      ]}>
       <Card.Content>
         <View>
           <Title>{name}</Title>
@@ -64,7 +63,11 @@ const RecipeElement: FC<RecipeElementProps> = ({ recipe, checkRecipe }) => {
         </View>
 
         <AddRoundedButton
-          handlePress={() => checkRecipe(recipe._id)}
+          handlePress={() => {
+            if (recipe) {
+              checkRecipe(recipe._id);
+            }
+          }}
           additionalStyling={{ position: "absolute", right: 20, bottom: 20 }}
           label={active ? "-" : "+"}
         />

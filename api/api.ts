@@ -1,11 +1,12 @@
 import axios from "axios";
+import { API_URL } from "@env";
 
 const api = axios.create({
-  baseURL: `http://192.168.1.135:5000/`,
+  baseURL: API_URL || `http://192.168.1.108:5000/`,
 });
 
 export default axios.create({
-  baseURL: `http://192.168.1.135:5000/`,
+  baseURL: API_URL || `http://192.168.1.108:5000/`,
 });
 
 export const deleteRecipe = (id: string) => {
