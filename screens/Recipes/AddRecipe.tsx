@@ -43,29 +43,28 @@ const AddRecipe = () => {
   const { token } = useSelector((state) => state.auth.user);
 
   const handleSubmit = async () => {
+    console.log("object");
     if (recipeValues.name === "") {
       return;
     }
-    setLoading(true);
-
+    // setLoading(true);
     const res = await fetch("http://192.168.1.135:5000/recipes/add", {
       body: JSON.stringify({ ...recipeValues, token }),
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
-    })
-      .then((response) => response.json())
-      .then((data) => (data.errors ? setStatus("error") : setStatus("success")))
-      .catch(() => setStatus("error"))
-      .finally(() => setLoading(false));
+    }).then((response) => response.json());
+    // .then((data) => (data.errors ? setStatus("error") : setStatus("success")))
+    // .catch(() => setStatus("error"))
+    // .finally(() => setLoading(false));
   };
 
   return (
-    <ScrollView
-      nestedScrollEnabled={true}
+    <View
+      // nestedScrollEnabled={true}
       style={styles.wrapper}
-      contentContainerStyle={{ paddingBottom: 50 }}
+      // contentContainerStyle={{ paddingBottom: 50 }}
     >
       {status === "success" ? (
         <View>
@@ -84,13 +83,13 @@ const AddRecipe = () => {
           />
         </>
       )}
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    padding: 20,
+    paddingHorizontal: 20,
     paddingBottom: 100,
     height: "100%",
   },

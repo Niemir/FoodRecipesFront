@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  VirtualizedList,
 } from "react-native";
 import { Card } from "react-native-paper";
 import { getIngredients } from "../../api/api";
@@ -16,25 +17,29 @@ import useDebounce from "../../hooks/useDebounce";
 import { inputs } from "../../styles";
 import AddRoundedButton from "../AddRoundedButton";
 import Title from "../Title";
+
+type Units = "szt" | "g" | "ml";
 export interface Ingredient {
+  id: string;
   name: string;
   qty: number;
-  unit: "szt" | "g" | "ml";
+  unit: Units;
 }
 interface IngredientsProps {
   handleRecipeValues: (ingredients: Ingredient[]) => void;
   initialValue?: Ingredient[];
 }
 const initialIngredient = {
+  id: "",
   name: "",
   qty: 0,
-  unit: "g",
+  unit: "g" as const,
 };
 const Ingredients: FC<IngredientsProps> = ({
   handleRecipeValues,
   initialValue,
 }) => {
-  const [unit, setUnit] = useState<"szt" | "g" | "ml">("g");
+  const [unit, setUnit] = useState<Units>("g");
   const [ingredients, setIngredients] = useState<Array<Ingredient>>(
     initialValue ? initialValue : []
   );
@@ -129,6 +134,7 @@ const Ingredients: FC<IngredientsProps> = ({
                     setCurrentIngredient({
                       ...currentIngredient,
                       name: item.name,
+                      id: item._id,
                     });
                     setPickerVisibility(false);
                   }}

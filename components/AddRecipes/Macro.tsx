@@ -4,20 +4,20 @@ import { inputs } from "../../styles";
 import Title from "../Title";
 
 export interface Macros {
-  protein: number;
-  carbohydrates: number;
-  fat: number;
-  calories: number;
+  protein: number | string;
+  carbohydrates: number | string;
+  fat: number | string;
+  calories: number | string;
 }
 interface MacroProps {
   handleRecipesMacros: (macros: Macros) => void;
   initialValue?: Macros;
 }
 const initialValues: Macros = {
-  protein: 0,
-  carbohydrates: 0,
-  fat: 0,
-  calories: 0,
+  protein: "",
+  carbohydrates: "",
+  fat: "",
+  calories: "",
 };
 const handleTranslate = (label: string): string => {
   switch (label) {
@@ -42,7 +42,12 @@ const Macro: FC<MacroProps> = ({ handleRecipesMacros, initialValue }) => {
     .sort()
     .map(([key, val]) => (
       <View
-        style={{ flexDirection: "row", height: 40, alignItems: "center" }}
+        style={{
+          flexDirection: "row",
+          height: 40,
+          alignItems: "center",
+          width: "50%",
+        }}
         key={key}
       >
         <Text>{handleTranslate(key)}</Text>
@@ -67,7 +72,11 @@ const Macro: FC<MacroProps> = ({ handleRecipesMacros, initialValue }) => {
   return (
     <View>
       <Title>Makrosładniki</Title>
-      <View style={{ marginBottom: 10 }}>{showMacros}</View>
+      <View
+        style={{ marginBottom: 10, flexDirection: "row", flexWrap: "wrap" }}
+      >
+        {showMacros}
+      </View>
     </View>
   );
 };

@@ -23,6 +23,17 @@ export const getShoppingList = (id: string) => {
 export const getShoppingLists = async (token: string) => {
   return api.get(`shoppingList/?token=${token}`);
 };
+export const mergeShoppingLists = async (
+  recipe1: string,
+  recipe2: string,
+  token: string
+) => {
+  return api.post(`shoppingList/merge/`, {
+    token,
+    recipe1,
+    recipe2,
+  });
+};
 
 export const getSingleRecipe = async (id: string, token: string) => {
   if (!token) {
