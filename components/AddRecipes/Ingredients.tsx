@@ -6,12 +6,19 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
+  // TextInput,
   TouchableOpacity,
   View,
   VirtualizedList,
 } from "react-native";
-import { Card } from "react-native-paper";
+import {
+  Button,
+  Card,
+  IconButton,
+  TextInput,
+  Divider,
+  useTheme,
+} from "react-native-paper";
 import { getIngredients } from "../../api/api";
 import useDebounce from "../../hooks/useDebounce";
 import { inputs } from "../../styles";
@@ -51,6 +58,8 @@ const Ingredients: FC<IngredientsProps> = ({
     []
   );
 
+  const theme = useTheme();
+
   const removeIngredient = (name: string) => {
     const newIngredients = ingredients.filter(
       (ingredient) => ingredient.name !== name
@@ -89,22 +98,7 @@ const Ingredients: FC<IngredientsProps> = ({
   return (
     <View>
       <Title>Składniki</Title>
-      {ingredients.map((ingredient, id) => (
-        <View
-          key={ingredient.name + id}
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <Text>
-            {ingredient.name} - {ingredient.qty} {ingredient.unit}
-          </Text>
-          <Pressable onPress={() => removeIngredient(ingredient.name)}>
-            <Text>Usuń</Text>
-          </Pressable>
-        </View>
-      ))}
+
       {/* przebudować składniki, tak, żeby wybierać z list składnik, dodawać go jako
       object, wyciagać id i tak wrzucać do przepisu */}
       <View style={style.inputRow}>
@@ -120,7 +114,7 @@ const Ingredients: FC<IngredientsProps> = ({
             });
           }}
           value={currentIngredient.name}
-          style={inputs.primary}
+          style={{ width: "100%" }}
           placeholder="Nazwa składnika"
         />
         {isPickerVisible && (
@@ -137,8 +131,7 @@ const Ingredients: FC<IngredientsProps> = ({
                       id: item._id,
                     });
                     setPickerVisibility(false);
-                  }}
-                >
+                  }}>
                   <Text>{item.name}</Text>
                 </TouchableOpacity>
               );
@@ -148,6 +141,8 @@ const Ingredients: FC<IngredientsProps> = ({
             style={style.searchResultsContainer}
           />
         )}
+      </View>
+      <View style={style.inputRow}>
         <TextInput
           onChangeText={(e) =>
             setCurrentIngredient({ ...currentIngredient, qty: parseInt(e) })
@@ -159,7 +154,11 @@ const Ingredients: FC<IngredientsProps> = ({
             })
           }
           value={currentIngredient.qty}
-          style={{ ...inputs.primary, ...inputs.rounded, marginHorizontal: 3 }}
+          style={{
+            width: 60,
+            textAlign: "center",
+          }}
+          mode="outlined"
           placeholder="100"
           keyboardType="number-pad"
         />
@@ -169,15 +168,39 @@ const Ingredients: FC<IngredientsProps> = ({
             setUnit(itemValue);
             setCurrentIngredient({ ...currentIngredient, unit: itemValue });
           }}
-          style={{ width: 90, borderColor: "black" }}
-        >
+          style={{ width: 90, borderColor: "black" }}>
           <Picker.Item label="g" value="g" />
           <Picker.Item label="ml" value="ml" />
           <Picker.Item label="szt" value="szt" />
         </Picker>
-
-        <AddRoundedButton handlePress={addIngredient} />
+        <IconButton
+          icon="plus"
+          style={{
+            backgroundColor: theme.colors.primary,
+            marginLeft: "auto",
+            elevation: 7,
+          }}
+          size={25}
+          onPress={addIngredient}
+        />
       </View>
+      {ingredients.map((ingredient, id) => (
+        <View
+          key={ingredient.name + id}
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}>
+          <Text>
+            {ingredient.name} - {ingredient.qty} {ingredient.unit}
+          </Text>
+          <IconButton
+            icon={"minus"}
+            onPress={() => removeIngredient(ingredient.name)}
+          />
+        </View>
+      ))}
     </View>
   );
 };
@@ -187,7 +210,8 @@ const style = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
-    margin: 10,
+    // margin: 10,
+    marginBottom: 10,
     marginLeft: 0,
   },
   add: {

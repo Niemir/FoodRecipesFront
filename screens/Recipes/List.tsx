@@ -8,7 +8,9 @@ import {
   Text,
   Pressable,
   Button,
+  Platform,
 } from "react-native";
+import { AnimatedFAB } from "react-native-paper";
 import { useSelector } from "react-redux";
 import { Background } from "victory-native";
 import RecipeElement from "../../components/RecipeElement";
@@ -28,6 +30,19 @@ const List: FC = ({ route, navigation }) => {
 
     // console.log(recipes);
   }, [navigation]);
+
+  const [isExtended, setIsExtended] = useState(true);
+
+  const isIOS = Platform.OS === "ios";
+
+  const onScroll = ({ nativeEvent }) => {
+    const currentScrollPosition =
+      Math.floor(nativeEvent?.contentOffset?.y) ?? 0;
+
+    setIsExtended(currentScrollPosition <= 0);
+  };
+
+  const fabStyle = { ["right"]: 16 };
   return (
     <View style={styles.wrapper}>
       <FlatList
@@ -42,19 +57,21 @@ const List: FC = ({ route, navigation }) => {
               navigation.navigate(EDIT, {
                 recipeId: item._id,
               })
-            }
-          >
+            }>
             <RecipeElement recipe={item} />
           </Pressable>
         )}
       />
 
-      <Pressable
-        style={styles.button}
+      <AnimatedFAB
+        icon={"plus"}
+        label={"Dodaj przepis"}
+        extended={isExtended}
         onPress={() => navigation.navigate(ADD_NEW)}
-      >
-        <Text style={styles.buttonText}>Dodaj nowy przepis</Text>
-      </Pressable>
+        animateFrom={"right"}
+        iconMode={"static"}
+        style={[styles.fabStyle, fabStyle]}
+      />
     </View>
   );
 };
@@ -85,6 +102,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "white",
+  },
+  fabStyle: {
+    bottom: 16,
+    right: 16,
+    position: "absolute",
   },
 });
 

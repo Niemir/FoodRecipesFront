@@ -38,9 +38,12 @@ const Day = ({ route }) => {
     setDisabled(!singleDayRecipes.some((recipe) => recipe.active));
   }, [singleDayRecipes]);
 
-  useEffect(() => {
-    // console.log(list);
-  }, [list]);
+  const setAllUnactive = () => {
+    const newRecipes = singleDayRecipes.map((recipe) => {
+      return { ...recipe, active: false };
+    });
+    setSingleDayRecipes(newRecipes);
+  };
 
   const handleRecipePress = (id: string) => {
     const newRecipes = singleDayRecipes.map((recipe) =>
@@ -73,17 +76,16 @@ const Day = ({ route }) => {
         recipes={singleDayRecipes}
         submitDay={submitDay}
         addDayDisabled={isDisabled}
+        clearSubmitedRecipes={setAllUnactive}
       />
       <ScrollView
         style={styles.recipesWrapper}
-        contentContainerStyle={{ paddingBottom: 100 }}
-      >
+        contentContainerStyle={{ paddingBottom: 100 }}>
         {singleDayRecipes &&
           singleDayRecipes.map((recipe) => (
             <Pressable
-              key={recipe.entityId}
-              onPress={() => handleRecipePress(recipe._id)}
-            >
+              key={recipe._id}
+              onPress={() => handleRecipePress(recipe._id)}>
               <RecipeElement recipe={recipe} checkRecipe={handleRecipePress} />
             </Pressable>
           ))}

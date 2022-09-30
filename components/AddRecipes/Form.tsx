@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { TextInput, View } from "react-native";
+import { TextInput } from "react-native-paper";
 import { Recipe } from "../../screens/Recipes/AddRecipe";
 import { inputs } from "../../styles";
 import Title from "../Title";
@@ -47,7 +47,6 @@ const Form: FC<FormProps> = ({ recipeValues, setRecipesValues }) => {
             setRecipesValues({ ...recipeValues, name: e.nativeEvent.text })
           }
           value={recipeValues.name}
-          style={inputs.primary}
           placeholder="Np. Tosty z serem"
         />
       )}

@@ -1438,6 +1438,18 @@
   resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.2.1.tgz#86f19781c6f34a5c9dd25dca99915e0306f477d1"
   integrity sha512-EnmAbKMsptrliRKf95rdgS6BhMjML+mIns06+G1Vdih6BrEo7/0iytThUv3WBf99AI76dyEq/cqLUwHPiFzXWg==
 
+"@react-navigation/elements@^1.3.4":
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.4.tgz#abb48136508c1e60862dc14a101ce02ff685a337"
+  integrity sha512-O0jICpjn3jskVo4yiWzZozmj7DZy1ZBbn3O7dbenuUjZSj/cscjwaapmZZFGcI/IMmjmx8UTKsybhCFEIbGf3g==
+
+"@react-navigation/material-bottom-tabs@^6.2.2":
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/@react-navigation/material-bottom-tabs/-/material-bottom-tabs-6.2.2.tgz#44fef016bacb092a55760378b5086b377cd90d19"
+  integrity sha512-/9FqgtIAl7TvAF5iCxcl25AdkW9i+5sC8aMXJy2ymilaIroWhDf/wD5TDOquOA3mi+4+ZPEeQHTQt43j8UiqbA==
+  dependencies:
+    "@react-navigation/elements" "^1.3.4"
+
 "@react-navigation/native-stack@^6.2.5":
   version "6.2.5"
   resolved "https://registry.yarnpkg.com/@react-navigation/native-stack/-/native-stack-6.2.5.tgz#bfa19516cf434f831e6d4ba28d32b9bc5436d181"
@@ -2456,6 +2468,11 @@ d3-voronoi@^1.1.2:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/d3-voronoi/-/d3-voronoi-1.1.4.tgz#dd3c78d7653d2bb359284ae478645d95944c8297"
   integrity sha512-dArJ32hchFsrQ8uMiTBLq256MpnZjeuBtdHpaDlYuQyjU0CVzCJl/BVW+SkszaAeH95D/8gxqAhgx0ouAWAfRg==
+
+dayjs@^1.11.4:
+  version "1.11.4"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.4.tgz#3b3c10ca378140d8917e06ebc13a4922af4f433e"
+  integrity sha512-Zj/lPM5hOvQ1Bf7uAvewDaUcsJoI6JmNqmHhHl3nyumwe0XHwt8sWdOVAPACJzCebL8gQCi+K49w7iKWnGwX9g==
 
 dayjs@^1.8.15:
   version "1.10.7"

@@ -34,8 +34,15 @@ import Connections from "./screens/Connections";
 
 const theme = {
   ...DefaultTheme,
+  roundness: 20,
+  version: 3,
+
   colors: {
     ...DefaultTheme.colors,
+    primary: "#FFBB01",
+    secondary: "#EFEEF1",
+    tertiary: "#a1b2c3",
+    black: "#313131",
   },
 };
 
@@ -65,21 +72,28 @@ const AppStackScreen = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === HOME) {
-            return <Ionicons name="home" size={size} color={color} />;
+            console.log(size);
+            return <Ionicons name="home-outline" size={size} color={color} />;
           } else if (route.name === RECIPES) {
-            return <Ionicons name="receipt" size={size} color={color} />;
+            return (
+              <Ionicons name="receipt-outline" size={size} color={color} />
+            );
           } else if (route.name === CONNECTIONS) {
-            return <Ionicons name="person-add" size={size} color={color} />;
+            return (
+              <Ionicons name="person-add-outline" size={size} color={color} />
+            );
           } else if (route.name === DAYS) {
-            return <Ionicons name="calendar" size={size} color={color} />;
+            return (
+              <Ionicons name="calendar-outline" size={size} color={color} />
+            );
           } else if (route.name === SHOPPING_NAV) {
-            return <Ionicons name="cart" size={size} color={color} />;
+            return <Ionicons name="cart-outline" size={size} color={color} />;
           }
         },
-        tabBarInactiveTintColor: "gray",
-        tabBarActiveTintColor: "blue",
-      })}
-    >
+        tabBarInactiveTintColor: theme.colors.black,
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarShowLabel: false,
+      })}>
       <AppStack.Screen name={HOME} component={Home} />
       <AppStack.Screen
         name={RECIPES}

@@ -27,6 +27,7 @@ const Connections: FC<ConnectionsProps> = ({ navigation }) => {
   const { token } = useSelector((state) => state.auth.user);
   const [refresh, setRefresh] = useState(0);
 
+  console.log(users);
   //   TODO:sometimes there is an error while loading screen
   if (!users) {
     return (
@@ -67,8 +68,7 @@ const Connections: FC<ConnectionsProps> = ({ navigation }) => {
               } catch (error) {
                 console.log(error);
               }
-            }}
-          >
+            }}>
             {users
               .find((el) => el._id === user._id)
               .connections.some((friend) => friend === singleUser._id) ? (

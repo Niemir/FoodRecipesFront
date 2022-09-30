@@ -3,6 +3,8 @@ import { API_URL } from "@env";
 
 const api = axios.create({
   baseURL: API_URL || `http://192.168.1.108:5000/`,
+  timeout: 3000,
+  timeoutErrorMessage: "timeout",
 });
 
 export default axios.create({

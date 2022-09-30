@@ -63,7 +63,8 @@ const ShoppingList: FC = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <View>
+    <View
+      style={[styles.container, mergingMode ? styles.activeBackground : {}]}>
       <View style={styles.top}>
         <Button mode="contained" onPress={() => setMergingMode(!mergingMode)}>
           Tryb łączenia
@@ -78,17 +79,11 @@ const ShoppingList: FC = ({ navigation }) => {
             mergeShoppingLists(mergingList[0], mergingList[1], token).then(
               (data) => setRefresh(refresh + 1)
             );
-          }}
-        >
+          }}>
           Połącz
         </Button>
       </View>
-      <ScrollView
-        contentContainerStyle={[
-          styles.list,
-          mergingMode ? styles.listActive : {},
-        ]}
-      >
+      <ScrollView contentContainerStyle={[styles.list]}>
         {shoppingLists.map((list) => (
           <ListElement
             key={list.list._id}
@@ -108,21 +103,20 @@ const ShoppingList: FC = ({ navigation }) => {
 export default ShoppingList;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  list: {
-    padding: 5,
-    paddingBottom: 50,
-  },
-  listActive: {
-    backgroundColor: "yellow",
-  },
+  container: {},
   top: {
     alignItems: "center",
     justifyContent: "center",
-    height: 50,
-    backgroundColor: "#f5f5f5",
+    height: 40,
     flexDirection: "row",
+    marginTop: 10,
+  },
+  list: {
+    padding: 20,
+    paddingBottom: 50,
+    minHeight: "100%",
+  },
+  activeBackground: {
+    backgroundColor: "#A2D2FF",
   },
 });

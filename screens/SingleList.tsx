@@ -76,7 +76,7 @@ const SingleList: FC<SingleListProps> = ({ route, navigation }) => {
           <List.Section>
             {data.ingredients.map((ingredient) => (
               <List.Item
-                key={ingredient.name}
+                key={ingredient.uuid}
                 onPress={() =>
                   updateIngredients(ingredient.name, !ingredient.value)
                 }

@@ -1,12 +1,20 @@
 import { StyleSheet } from "react-native";
 import React, { FC, useState } from "react";
-import { Button, Card, Paragraph, Title } from "react-native-paper";
+import {
+  Avatar,
+  Button,
+  Card,
+  IconButton,
+  Paragraph,
+  Title,
+} from "react-native-paper";
 import { deleteRecipe } from "../../api/api";
 import {
   NavigationProp,
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import { SINGLE_LIST } from "../../helpers/screens";
+import dayjs from "dayjs";
 interface ListElementProps {
   data: any;
   rerenderList: () => void;
@@ -39,12 +47,20 @@ const ListElement: FC<ListElementProps> = ({
   };
   return (
     <Card
-      style={[styles.card, isActive && mergingMode ? styles.cardActive : {}]}
-    >
+      elevation={5}
+      style={[styles.card, isActive && mergingMode ? styles.cardActive : {}]}>
       <Card.Content>
-        <Paragraph>Autor: {data?.author?.name}</Paragraph>
-        {data?.list?.connected && <Paragraph>Połączona </Paragraph>}
-        <Paragraph>{data.list.createdAt}</Paragraph>
+        <Card.Title
+          title={`${data?.author?.name}`}
+          subtitle={dayjs(data.list.createdAt).format("YYYY-MM-DD H:m")}
+          left={(props) => <Avatar.Icon {...props} icon="account" />}
+          right={(props) =>
+            data?.list?.connected && (
+              <IconButton {...props} icon="account-multiple-outline" />
+            )
+          }
+        />
+
         <Card.Actions style={{ padding: 0, justifyContent: "space-between" }}>
           {mergingMode ? (
             <Button
@@ -53,8 +69,7 @@ const ListElement: FC<ListElementProps> = ({
                   setIsActive(!isActive);
                   handleMergin(data.list._id);
                 }
-              }}
-            >
+              }}>
               {isActive ? "Odznacz" : "Zaznacz "}
             </Button>
           ) : (
@@ -77,7 +92,7 @@ export default ListElement;
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 5,
+    marginBottom: 10,
   },
   cardActive: {
     backgroundColor: "#e3e4da",

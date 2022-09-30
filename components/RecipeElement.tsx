@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Button, Pressable, StyleSheet, Text, View } from "react-native";
-import { Card, Paragraph, Title } from "react-native-paper";
+import { Card, IconButton, Paragraph, Title } from "react-native-paper";
 import {
   VictoryBar,
   VictoryChart,
@@ -53,13 +53,16 @@ const RecipeElement: FC<RecipeElementProps> = ({ recipe, checkRecipe }) => {
           ? { ...styles.wrapper, backgroundColor: "#dfdfdf" }
           : styles.wrapper,
       ]}>
+      <Card.Title title={name} subtitle={`${calories} kcal`} />
       <Card.Content>
         <View>
-          <Title>{name}</Title>
-          <Paragraph>{calories} kcal</Paragraph>
-          <Paragraph>Białko: {protein} g</Paragraph>
-          <Paragraph>Węglodowany: {carbohydrates} g</Paragraph>
-          <Paragraph>Tłuszcze: {fat} g</Paragraph>
+          <Paragraph style={{ fontSize: 10, margin: 0, lineHeight: 10 }}>
+            Białko: {protein} g
+          </Paragraph>
+          <Paragraph style={{ fontSize: 10 }}>
+            Węglodowany: {carbohydrates} g
+          </Paragraph>
+          <Paragraph style={{ fontSize: 10 }}>Tłuszcze: {fat} g</Paragraph>
         </View>
 
         <AddRoundedButton

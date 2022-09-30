@@ -4,18 +4,22 @@ import { Button, Dialog, Paragraph, Portal } from "react-native-paper";
 import { useSelector } from "react-redux";
 import api from "../../api/api";
 import { Recipe } from "../../screens/Recipes/AddRecipe";
+import { useAppDispatch } from "../../store";
+import { clearDays } from "../../store/recipes/recipesReducer";
 import Authors from "../AddRecipes/Authors";
 interface HeaderProps {
   recipes: Recipe[];
   submitDay: (type: "add" | "remove") => void;
   dayID: number;
   addDayDisabled: boolean;
+  clearSubmitedRecipes: () => void;
 }
 const Header: FC<HeaderProps> = ({
   recipes,
   submitDay,
   dayID,
   addDayDisabled,
+  clearSubmitedRecipes,
 }) => {
   const [visible, setVisible] = useState(false);
   const showDialog = () => {
@@ -26,6 +30,7 @@ const Header: FC<HeaderProps> = ({
   const { token } = useSelector((state) => state.auth.user);
   const activeRecipes = recipes.filter((recipe) => recipe.active);
   const activeRecipesLength = activeRecipes.length;
+  const dispatch = useAppDispatch();
 
   const isDaySubmited = days[dayID].length > 0;
   const submitedDaysCount = Object.values(days).filter(
@@ -58,8 +63,7 @@ const Header: FC<HeaderProps> = ({
         paddingVertical: 5,
         justifyContent: "space-between",
         flexDirection: "row",
-      }}
-    >
+      }}>
       <View>
         <Text style={{ color: "black" }}>
           Posiłki {activeRecipesLength} / 4
@@ -71,15 +75,13 @@ const Header: FC<HeaderProps> = ({
           style={{ marginBottom: 5 }}
           mode="outlined"
           onPress={() => submitDay(isDaySubmited ? "remove" : "add")}
-          disabled={addDayDisabled}
-        >
+          disabled={addDayDisabled}>
           {isDaySubmited ? "Usuń dzień z listy" : "Zatwierdź dzień"}
         </Button>
         <Button
           mode="contained"
           onPress={showDialog}
-          disabled={submitedDaysCount === 0}
-        >
+          disabled={submitedDaysCount === 0}>
           Dodaj listę zakupów
         </Button>
       </View>
@@ -104,8 +106,9 @@ const Header: FC<HeaderProps> = ({
                   token,
                 });
                 hideDialog();
-              }}
-            >
+                clearSubmitedRecipes();
+                dispatch(clearDays());
+              }}>
               Tak
             </Button>
           </Dialog.Actions>

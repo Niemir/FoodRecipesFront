@@ -39,11 +39,13 @@ const initialRecipe = {
 };
 const AddRecipe = () => {
   const [recipeValues, setRecipesValues] = useState<Recipe>(initialRecipe);
-  const [isLoading, setLoading] = useState<boolean>(false);
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const { token } = useSelector((state) => state.auth.user);
 
   const handleSubmit = async () => {
+    setStatus("loading");
     console.log("object");
     if (recipeValues.name === "") {
       return;
@@ -78,11 +80,8 @@ const AddRecipe = () => {
             recipeValues={recipeValues}
             setRecipesValues={setRecipesValues}
           />
-          <Submit
-            handleSubmit={handleSubmit}
-            isLoading={isLoading}
-            status={status}
-          />
+
+          <Submit handleSubmit={handleSubmit} status={status} />
         </>
       )}
     </View>
